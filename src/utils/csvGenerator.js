@@ -1,5 +1,5 @@
 exports.generateCSV = (students) => {
-    const headers = "Roll Number,Full Name,Email,Enrolled Course,Course Code,Course Name,Street,City,State,Country,Zip Code,Date of Birth\n";
+    const headers = "Roll Number,Full Name,Email,Enrolled Course,Course Code,Course Name,Street,City,State,Country,Zip Code,Date of Birth,Is Deleted,Deleted At\n";
     const rows = students.map(student => {
       const enrolledOn = student.enrolledCourse && student.enrolledCourse.enrolledOn ? student.enrolledCourse.enrolledOn.toISOString().split('T')[0] : '';
       const courseCode = student.enrolledCourse ? student.enrolledCourse.courseCode : '';
@@ -10,7 +10,8 @@ exports.generateCSV = (students) => {
       const country = student.address ? student.address.country : '';
       const zipCode = student.address ? student.address.zipCode : '';
       const dob = student.dateOfBirth ? student.dateOfBirth.toISOString().split('T')[0] : '';
-
+      const isDeleted = student.isDeleted ? 'Yes' : 'No';
+      const deletedAt = student.deletedAt ? student.deletedAt.toISOString().split('T')[0] : '';
       return [
         student.rollNumber,
         student.fullName.replace(/,/g, ';'), // Handle commas in names
@@ -23,7 +24,9 @@ exports.generateCSV = (students) => {
         state,
         country,
         zipCode,
-        dob
+        dob,
+        isDeleted,
+        deletedAt
       ].join(',');
     }).join('\n');
     return `${headers}${rows}`;

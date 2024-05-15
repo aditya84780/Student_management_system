@@ -22,6 +22,8 @@ const StudentSchema = new mongoose.Schema({
   email: String,
   address: AddressSchema,
   dateOfBirth: Date,
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date, default: null },
 });
 
 StudentSchema.pre('save', async function(next) {
@@ -44,7 +46,7 @@ StudentSchema.pre('save', async function(next) {
       this.rollNumber = `${courseYearCode}${uniqueCode}`;
       next();
     } catch (error) {
-      next(error); // Pass errors to the next middleware
+      next(error);
     }
   } else {
     next();

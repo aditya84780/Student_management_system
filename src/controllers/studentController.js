@@ -13,7 +13,10 @@ exports.createStudent = async (req, res) => {
 
 exports.listStudents = async (req, res) => {
   const { page = 1, limit = 10, name = ""} = req.query;
-  const query = name ? { fullName: { $regex: name, $options: 'i' } } : {};
+  const query = {
+    ...name ? { fullName: { $regex: name, $options: 'i' } } : {},
+    isDeleted: false
+  };
   try {
     const students = await Student.find(query)
       .limit(limit)
@@ -55,11 +58,15 @@ exports.updateStudent = async (req, res) => {
 
 exports.deleteStudent = async (req, res) => {
   try {
-    const student = await Student.findOneAndDelete({ rollNumber: req.params.rollNumber });
+    const student = await Student.findOneAndUpdate(
+      { rollNumber: req.params.rollNumber, isDeleted: false },
+      { isDeleted: true, deletedAt: new Date() },
+      { new: true }
+    );
     if (!student) {
-      return res.status(404).send();
+      return res.status(404).send({ message: "No such student exists" });
     }
-    res.send(student);
+    res.send({ message: "Student deleted successfully.", student });
   } catch (error) {
     res.status(500).send(error);
   }

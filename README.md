@@ -1,6 +1,6 @@
-# TransFi Learning
+# Student Management System
 
-TransFi Learning is a server application designed to manage student records for educational institutions. It allows for creating, updating, deleting, and retrieving student data, including details such as name, enrollment information, and contact details. The system also supports advanced features like CSV data exportation, search, and pagination.
+This is a server application designed to manage student records for educational institutions. It allows for creating, updating, deleting, and retrieving student data, including details such as name, enrollment information, and contact details. The system also supports advanced features like CSV data exportation, search, and pagination.
 
 ## Description
 
